@@ -24,7 +24,5 @@ namespace Mango.Services.CouponAPI.Models
         //public string? ProductCategory { get; set; } // Optional, if the coupon is specific to a category
         //public string? ProductDescription { get; set; }
 
-
-
     }
 }
