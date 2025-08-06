@@ -76,6 +76,73 @@ namespace Mango.Services.CouponAPI.Controllers
             return _response;
         }
 
-      
+        [HttpPost]//-> internal name for URL
+        //[Route("{discount:int}")] //---> No need for this
+        public ResponseDto Post([FromBody] CouponDto couponDto)
+        {
+            try
+            {
+                Coupon coupon = _mapper.Map<Coupon>(couponDto);
+
+                //coupon.DiscountAmount = discount; // -> This line will not work, since value from query-parameter
+                //are not mentioned in action method
+
+                _db.Coupons.Add(coupon);
+                _db.SaveChanges();
+                //_db.SaveChangesAsync(); ---> If use async, id will not be assigned the latest one.
+                _response.Result = _mapper.Map<CouponDto>(coupon);
+            }
+            catch (Exception ex)
+            {
+                _response.Result = StatusCodes.Status500InternalServerError;
+                _response.IsSucess = false;
+                _response.Message = ex.Message;
+            }
+            return _response;
+        }
+
+        [HttpPut]//-> internal name for URL
+        public ResponseDto Put([FromBody] CouponDto couponDto)
+        {
+            try
+            {
+                Coupon coupon = _mapper.Map<Coupon>(couponDto);
+
+                // It will used id available in coupon
+                _db.Coupons.Update(coupon);
+                _db.SaveChanges();
+                //_db.SaveChangesAsync(); ---> If use async, id will not be assigned the latest one.
+                _response.Result = _mapper.Map<CouponDto>(coupon);
+            }
+            catch (Exception ex)
+            {
+                _response.Result = StatusCodes.Status500InternalServerError;
+                _response.IsSucess = false;
+                _response.Message = ex.Message;
+            }
+            return _response;
+        }
+
+        [HttpDelete]//-> internal name for URL
+        public ResponseDto Delete(int id)
+        {
+            try
+            {
+
+                Coupon coupon = _db.Coupons.First(u => u.Id == id); 
+                // It will used id available in coupon
+                _db.Coupons.Remove(coupon);
+                _db.SaveChanges();
+                //_db.SaveChangesAsync(); ---> If use async, id will not be assigned the latest one.
+                //_response.Result = _mapper.Map<CouponDto>(coupon);
+            }
+            catch (Exception ex)
+            {
+                _response.Result = StatusCodes.Status500InternalServerError;
+                _response.IsSucess = false;
+                _response.Message = ex.Message;
+            }
+            return _response;
+        }
     }
 }
