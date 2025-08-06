@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Mango.Services.CouponAPI.Controllers
 {
     [Route("api/[controller]")]//-> this is shown in Swagger
-    [ApiController]
+    //[ApiController]
     public class CouponAPIController : ControllerBase
     {
         private readonly AppDbContext _db;
@@ -27,20 +27,22 @@ namespace Mango.Services.CouponAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving data from the database: {ex.Message}");
             }
-            return null;
         }
 
-        //[HttpGet(Name = "GetWeatherForecast")]//-> name for URL
-        //public IEnumerable<WeatherForecast> Get()
-        //{
-        //    return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        //    {
-        //        Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-        //        TemperatureC = Random.Shared.Next(-20, 55),
-        //        Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        //    })
-        //    .ToArray();
-        //}
+        [HttpGet]//-> internal name for URL
+        [Route("{id:int}")]
+        public object Get(int id)
+        {
+            try
+            {
+                object coupon = _db.Coupons.First(c=>c.Id==id);
+                return coupon;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving data from the database: {ex.Message}");
+            }
+        }
 
     }
 }
