@@ -34,7 +34,7 @@ namespace Mango.Services.CouponAPI.Controllers
             catch (Exception ex)
             {
                 _response.Result = StatusCodes.Status500InternalServerError;
-                _response.IsSucess = false;
+                _response.IsSuccess = false;
                 _response.Message = ex.Message;
             }
             return _response;
@@ -52,7 +52,7 @@ namespace Mango.Services.CouponAPI.Controllers
             catch (Exception ex)
             {
                 _response.Result = StatusCodes.Status500InternalServerError;
-                _response.IsSucess = false;
+                _response.IsSuccess = false;
                 _response.Message = ex.Message;
             }
                 return _response;
@@ -70,7 +70,7 @@ namespace Mango.Services.CouponAPI.Controllers
             catch (Exception ex)
             {
                 _response.Result = StatusCodes.Status500InternalServerError;
-                _response.IsSucess = false;
+                _response.IsSuccess = false;
                 _response.Message = ex.Message;
             }
             return _response;
@@ -95,7 +95,7 @@ namespace Mango.Services.CouponAPI.Controllers
             catch (Exception ex)
             {
                 _response.Result = StatusCodes.Status500InternalServerError;
-                _response.IsSucess = false;
+                _response.IsSuccess = false;
                 _response.Message = ex.Message;
             }
             return _response;
@@ -117,7 +117,7 @@ namespace Mango.Services.CouponAPI.Controllers
             catch (Exception ex)
             {
                 _response.Result = StatusCodes.Status500InternalServerError;
-                _response.IsSucess = false;
+                _response.IsSuccess = false;
                 _response.Message = ex.Message;
             }
             return _response;
@@ -139,7 +139,7 @@ namespace Mango.Services.CouponAPI.Controllers
             catch (Exception ex)
             {
                 _response.Result = StatusCodes.Status500InternalServerError;
-                _response.IsSucess = false;
+                _response.IsSuccess = false;
                 _response.Message = ex.Message;
             }
             return _response;
