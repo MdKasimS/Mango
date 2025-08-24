@@ -17,36 +17,59 @@ namespace Mango.Web.Service
         }
         public async Task<ResponseDto?> SendAsync(RequestDto requestDto)
         {
-            HttpClient client = _httpClientFactory.CreateClient("MangoAPI");
-            HttpRequestMessage message = new();
-            message.Headers.Add("Accept", "application/json");
-            //token
-
-            message.RequestUri = new Uri(requestDto.Url);
-            if (requestDto.Data != null)
+            try
             {
-                message.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data)
-                                                    , System.Text.Encoding.UTF8, "application/json");
-            }
 
-            HttpResponseMessage? apiResponse = null;
+                HttpClient client = _httpClientFactory.CreateClient("MangoAPI");
+                HttpRequestMessage message = new();
+                message.Headers.Add("Accept", "application/json");
+                //token
 
-            if (requestDto.Data != null)
-            {
-                message.Method = requestDto.ApiType switch
+                message.RequestUri = new Uri(requestDto.Url);
+                if (requestDto.Data != null)
                 {
-                    ApiType.POST => HttpMethod.Post,
-                    ApiType.PUT => HttpMethod.Put,
-                    ApiType.DELETE => HttpMethod.Delete,
-                    _ => HttpMethod.Get
-                };
-            }
-            apiResponse = await client.SendAsync(message);
+                    message.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data)
+                                                        ,Encoding.UTF8, "application/json");
+                }
 
-            switch(apiResponse.StatusCode)
+                HttpResponseMessage? apiResponse = null;
+
+                if (requestDto.Data != null)
+                {
+                    message.Method = requestDto.ApiType switch
+                    {
+                        ApiType.POST => HttpMethod.Post,
+                        ApiType.PUT => HttpMethod.Put,
+                        ApiType.DELETE => HttpMethod.Delete,
+                        _ => HttpMethod.Get
+                    };
+                }
+                apiResponse = await client.SendAsync(message);
+
+                switch (apiResponse.StatusCode)
+                {
+                    case HttpStatusCode.NotFound:
+                        return new() { IsSuccess = false, Message = "Not Found" };
+                    case HttpStatusCode.Forbidden:
+                        return new() { IsSuccess = false, Message = "Access Denied" };
+                    case HttpStatusCode.Unauthorized:
+                        return new() { IsSuccess = false, Message = "Unauthorized" };
+                    case HttpStatusCode.InternalServerError:
+                        return new() { IsSuccess = false, Message = "Internal Server Error" };
+                    default:
+                        var apiContent = await apiResponse.Content.ReadAsStringAsync();
+                        var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
+                        return apiResponseDto;
+                }
+            }
+            catch (Exception ex)
             {
-                case HttpStatusCode.NoContent:
-                    return new(){ IsSuccess = false, Message = "Not Found" };
+                var dto = new ResponseDto
+                {
+                    Message = ex.Message.ToString(),
+                    IsSuccess = false,
+                };
+                return dto;
             }
         }
     }
