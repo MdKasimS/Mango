@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Mango.Services.CouponAPI.Controllers
 {
-    [Route("api/[controller]")]//-> this is shown in Swagger
+    [Route("api/coupon")]//-> this is shown in Swagger
     [ApiController]
     public class CouponAPIController : ControllerBase
     {
