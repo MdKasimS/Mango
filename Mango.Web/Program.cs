@@ -14,6 +14,7 @@ helping developers avoid common pitfalls like socket exhaustion.
 */
 builder.Services.AddHttpClient();
 
+
 /* Registering a typed client for ICouponService with its implementation CouponService.
  This allows for dependency injection of ICouponService wherever needed in the application.
  The HttpClient instance provided to CouponService will be managed by the IHttpClientFactory,
@@ -22,7 +23,7 @@ builder.Services.AddHttpClient();
 */
 
 builder.Services.AddHttpClient<ICouponService, CouponService>();
-SD.CouponAPIBase = builder.Configuration["ServiceUrls: CouponAPI"];
+SD.CouponAPIBase = builder.Configuration["ServiceUrls:CouponAPI"];
 
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
