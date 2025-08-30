@@ -84,7 +84,8 @@ namespace Mango.Services.CouponAPI.Controllers
             {
                 Coupon coupon = _mapper.Map<Coupon>(couponDto);
 
-                //coupon.DiscountAmount = discount; // -> This line will not work, since value from query-parameter
+                //coupon.DiscountAmount = discount; 
+                // -> This line will not work, since value from query-parameter
                 //are not mentioned in action method
 
                 _db.Coupons.Add(coupon);
