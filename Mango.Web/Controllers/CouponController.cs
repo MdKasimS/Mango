@@ -2,6 +2,7 @@ using Mango.Web.Models;
 using Mango.Web.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Mango.Web.Controllers
@@ -26,6 +27,9 @@ namespace Mango.Web.Controllers
             return View(list);
         }
 
-        
+        public IActionResult CouponCreate()
+        {
+            return View();
+        }
     }
 }
