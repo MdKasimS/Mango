@@ -44,6 +44,8 @@ namespace Mango.Web.Service
                         _ => HttpMethod.Get
                     };
                 }
+
+                //Request is sent here
                 apiResponse = await client.SendAsync(message);
 
                 switch (apiResponse.StatusCode)
