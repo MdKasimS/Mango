@@ -22,6 +22,7 @@ namespace Mango.Web.Controllers
             ResponseDto? response = await _couponService.GetAllCouponsAsync();
             if (response != null && response.IsSuccess)
             {
+                //De Serialization is not working correctly. It did not mapped Ids for CouponId
                 list = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result));
             }
             return View(list);
@@ -33,14 +34,32 @@ namespace Mango.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CouponCreate(CouponDto couponDto)
+        public async Task<IActionResult> CouponCreate(CouponDto model)
         {
-            ResponseDto? response = await _couponService.CreateCouponAsync(couponDto);
+            if (ModelState.IsValid)
+            {
+                ResponseDto? response = await _couponService.CreateCouponAsync(model);
+
+                if (response != null && response.IsSuccess)
+                {
+                    return RedirectToAction(nameof(CouponIndex));
+                }
+            }
+            return View(model);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> CouponDelete(int couponId)
+        {
+
+            ResponseDto? response = await _couponService.GetCouponByIdAsync(couponId);
+
             if (response != null && response.IsSuccess)
             {
-                coupon = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
+                CouponDto? model = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
+                return View(model);
             }
-            return View();
+            return NotFound();
         }
     }
 }
