@@ -48,7 +48,6 @@ namespace Mango.Web.Controllers
             return View(model);
         }
 
-        [HttpDelete]
         public async Task<IActionResult> CouponDelete(int couponId)
         {
 
