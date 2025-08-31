@@ -29,25 +29,25 @@ namespace Mango.Web.Service
                 if (requestDto.Data != null)
                 {
                     message.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data)
-                                                        ,Encoding.UTF8, "application/json");
+                                                        , Encoding.UTF8, "application/json");
                 }
 
                 HttpResponseMessage? apiResponse = null;
 
-                if (requestDto.Data != null)
+
+                message.Method = requestDto.ApiType switch
                 {
-                    message.Method = requestDto.ApiType switch
-                    {
-                        ApiType.POST => HttpMethod.Post,
-                        ApiType.PUT => HttpMethod.Put,
-                        ApiType.DELETE => HttpMethod.Delete,
-                        _ => HttpMethod.Get
-                    };
-                }
+                    ApiType.POST => HttpMethod.Post,
+                    ApiType.PUT => HttpMethod.Put,
+                    ApiType.DELETE => HttpMethod.Delete,
+                    _ => HttpMethod.Get
+                };
+
 
                 //Request is sent here
                 apiResponse = await client.SendAsync(message);
 
+                //For POST & PUT cases messages are not handled
                 switch (apiResponse.StatusCode)
                 {
                     case HttpStatusCode.NotFound:
