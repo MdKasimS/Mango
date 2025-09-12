@@ -58,7 +58,22 @@ namespace Mango.Web.Controllers
                 CouponDto? model = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
                 return View(model);
             }
+            //We can return 404 view here. For simplicity it is kept as it is
             return NotFound();
+        }
+
+        //This is called in CouponDelete view's Delete button
+        [HttpPost]
+        public async Task<IActionResult> CouponDelete(CouponDto couponDto)
+        {
+
+            ResponseDto? response = await _couponService.DeleteCouponAsync(couponDto.CouponId);
+
+            if (response != null && response.IsSuccess)
+            {
+                return RedirectToAction(nameof(CouponIndex));
+            }
+            return View(couponDto);
         }
     }
 }
