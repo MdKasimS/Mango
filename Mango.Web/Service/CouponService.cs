@@ -66,7 +66,7 @@ namespace Mango.Web.Service
             {
                 ApiType = SD.ApiType.DELETE,
                 //URL path not matching hence getting error
-                Url = SD.CouponAPIBase + "/api/coupon" + id
+                Url = SD.CouponAPIBase + "/api/coupon/" + id
             });
         }
 
