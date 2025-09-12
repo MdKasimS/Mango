@@ -65,6 +65,7 @@ namespace Mango.Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = SD.ApiType.DELETE,
+                //URL path not matching hence getting error
                 Url = SD.CouponAPIBase + "/api/coupon" + id
             });
         }
