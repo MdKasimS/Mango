@@ -6,6 +6,8 @@ namespace Mango.Services.CouponAPI.Models
     {
         [Key]
         public int Id { get; set; }
+
+        //This is not made unique. Not sure needed or not
         [Required]
         public string? CouponCode { get; set; }
         [Required]
