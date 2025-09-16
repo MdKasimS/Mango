@@ -11,10 +11,13 @@ namespace Mango.Services.AuthAPI.Service
         private readonly AppDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-        public AuthService(AppDbContext db, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public AuthService(AppDbContext db, IJwtTokenGenerator jwtTokGenerator,
+                UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _db = db;
+            _jwtTokenGenerator = jwtTokGenerator;
             _userManager = userManager;
             _roleManager = roleManager;
         }
@@ -30,7 +33,10 @@ namespace Mango.Services.AuthAPI.Service
             }
 
             //If user found, generate JWT token
+            //Check None mode - shows whole encrypted values conatining header, token value, etc
+            var token = _jwtTokenGenerator.GenerateToken(user);
 
+            //AuthAPI contains ApplicationUser (IdentityUser - a default User entity proivided by ASP.NET Identity
             UserDto userDto = new() 
             { 
                 Email = user.Email,
@@ -42,7 +48,7 @@ namespace Mango.Services.AuthAPI.Service
             LoginResponseDto loginResponseDto = new()
             { 
                 User = userDto,
-                Token = ""
+                Token = token
             };
 
             return loginResponseDto;
