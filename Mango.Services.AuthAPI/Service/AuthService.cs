@@ -73,6 +73,8 @@ namespace Mango.Services.AuthAPI.Service
 
         public async Task<string> Register(RegistrationRequestDto registrationRequestDto)
         {
+            //TODO: User creation timestamp missing.
+            //Like Name, add timestamp too.
             ApplicationUser user = new ApplicationUser()
             {
                 UserName = registrationRequestDto.Email,

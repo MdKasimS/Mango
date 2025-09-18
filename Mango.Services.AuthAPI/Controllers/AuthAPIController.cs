@@ -22,6 +22,7 @@ namespace Mango.Services.AuthAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDto model)
         {
+            //TODO: When the user was created, timestamp is missing
             var errorMessage = await _authService.Register(model);
 
             if (!string.IsNullOrEmpty(errorMessage))
