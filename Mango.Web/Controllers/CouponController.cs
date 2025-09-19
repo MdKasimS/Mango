@@ -1,4 +1,4 @@
-using Mango.Web.Models;
+                             using Mango.Web.Models;
 using Mango.Web.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -22,7 +22,7 @@ namespace Mango.Web.Controllers
             ResponseDto? response = await _couponService.GetAllCouponsAsync();
             if (response != null && response.IsSuccess)
             {
-                //De Serialization is not working correctly. It did not mapped Ids for CouponId
+                //TODO: De Serialization is not working correctly. It did not mapped Ids for CouponId
                 list = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result));
             }
             else
@@ -44,6 +44,7 @@ namespace Mango.Web.Controllers
             {
                 ResponseDto? response = await _couponService.CreateCouponAsync(model);
 
+                //No us eof result field yet.
                 if (response != null && response.IsSuccess)
                 {
                     TempData["success"] = "Coupon Created Successfully!";

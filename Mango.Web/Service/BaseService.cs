@@ -47,7 +47,7 @@ namespace Mango.Web.Service
                 //Request is sent here
                 apiResponse = await client.SendAsync(message);
 
-                ///Note:
+                ///Note: CouponAPI return ResponseDTO Whereas AuthAPI returens IActionResult
                 ///API might return ResponseDto or IActionResult(or its derived child ObjectResult)
                 ///Do remember, ObjectResult = IActionResult + Status Code + ResponseDto
                 ///      (OK/BadRequest/etc.)  (Inheritance)  (int Property) (object? Property)
