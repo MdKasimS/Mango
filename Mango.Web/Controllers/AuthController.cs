@@ -25,6 +25,8 @@ namespace Mango.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequestDto model)
         {
+            //Receives LoginResponseDto as payload in IActionResult
+            // - inside either Bad/Ok request
             ResponseDto responseDto = await _authService.LoginAsync(model);
             if(responseDto!=null && responseDto.IsSuccess)
             {
