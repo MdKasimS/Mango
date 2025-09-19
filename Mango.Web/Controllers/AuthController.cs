@@ -10,9 +10,11 @@ namespace Mango.Web.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
-        public AuthController(IAuthService authService)
+        private readonly ITokenProvider _tokenProvider;
+        public AuthController(IAuthService authService, ITokenProvider tokenProvider)
         {
             _authService = authService;
+            _tokenProvider = tokenProvider;
         }
 
         [HttpGet]
@@ -28,10 +30,12 @@ namespace Mango.Web.Controllers
             //Receives LoginResponseDto as payload in IActionResult
             // - inside either Bad/Ok request
             ResponseDto responseDto = await _authService.LoginAsync(model);
-            if(responseDto!=null && responseDto.IsSuccess)
+
+            if (responseDto != null && responseDto.IsSuccess)
             {
-                LoginResponseDto loginResponseDto = 
+                LoginResponseDto loginResponseDto =
                     JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(responseDto.Result));
+                _tokenProvider.SetToken(loginResponseDto.Token);
 
                 return RedirectToAction("Index", "Home");
             }
