@@ -64,21 +64,9 @@
                         }
                         else
                         {
-                            @* Temporary Code *@
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Hello @User.Identity.Name
-                                </a>
-                                <ul class="dropdown-menu aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" asp-controller="AuthController" asp-action="Logout">Logout</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                </ul>
-                            </li>
-
-                            @* GetHashCode used by Mango Author *@
-                            @* <li class="nav-item">
+                            <li class="nav-item">
                                 <a class="nav-link" asp-controller="Auth" asp-action="Logout">Logout</a>
-                            </li> *@
+                            </li>
                         }
                     </ul>
                 </div>
