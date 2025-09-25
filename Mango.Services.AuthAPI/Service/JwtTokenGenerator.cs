@@ -21,6 +21,11 @@ namespace Mango.Services.AuthAPI.Service
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtOptions.Secret);
+
+            //TODO: What is claim list in JWT?
+            //TODO: What is JwtRegisteredClaimNames? Is it .NET independent or used by AspNetCore.Identity provider
+            //TODO: What is ClaimsIdentity
+            //TODO: What is SecurityToken
             var claimList = new List<Claim>()
             {
                 new Claim(JwtRegisteredClaimNames.Email, applicationUser.Email),
@@ -39,6 +44,7 @@ namespace Mango.Services.AuthAPI.Service
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
+            //Actual token is generated Here.
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
