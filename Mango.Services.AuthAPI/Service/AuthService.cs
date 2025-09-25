@@ -48,9 +48,10 @@ namespace Mango.Services.AuthAPI.Service
                 return new LoginResponseDto() { User = null, Token = "" };
             }
 
+            var roles = await _userManager.GetRolesAsync(user);
             //If user found, generate JWT token
             //Check None mode - shows whole encrypted values conatining header, token value, etc
-            var token = _jwtTokenGenerator.GenerateToken(user);
+            var token = _jwtTokenGenerator.GenerateToken(user, roles);
 
             //AuthAPI contains ApplicationUser (IdentityUser - a default User entity proivided by ASP.NET Identity
             UserDto userDto = new()

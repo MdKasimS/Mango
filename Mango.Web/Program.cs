@@ -43,7 +43,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         //TODO: Add Access Denied Page
         options.AccessDeniedPath = "/Auth/AccessDenied";
 
-    });
+    }); 
 
 var app = builder.Build();
 
