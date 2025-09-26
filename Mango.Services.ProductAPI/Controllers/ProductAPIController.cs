@@ -11,6 +11,7 @@ namespace Mango.Services.ProductAPI.Controllers
 {
     [Route("api/product")]
     [ApiController]
+    [Authorize]
     public class ProductAPIController : ControllerBase
     {
         private readonly AppDbContext _db;
@@ -99,6 +100,7 @@ namespace Mango.Services.ProductAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public ResponseDto Post([FromBody] ProductDto productDto)
         {
             try
@@ -119,8 +121,32 @@ namespace Mango.Services.ProductAPI.Controllers
             return _response;
         }
 
+        [HttpPut]//-> internal name for URL
+        [Authorize(Roles = "ADMIN")]
+        public ResponseDto Put([FromBody] ProductDto productDto)
+        {
+            try
+            {
+                Product product = _mapper.Map<Product>(productDto);
+
+                // It will used id available in coupon
+                _db.Products.Update(product);
+                _db.SaveChanges();
+                //_db.SaveChangesAsync(); ---> If use async, id will not be assigned the latest one.
+                _response.Result = _mapper.Map<ProductDto>(product);
+            }
+            catch (Exception ex)
+            {
+                _response.Result = StatusCodes.Status500InternalServerError;
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+            return _response;
+        }
+        
         [HttpDelete]//-> internal name for URL
         [Route("{id:int}")]
+        [Authorize(Roles = "ADMIN")]
         public ResponseDto Delete(int id)
         {
             try
