@@ -16,9 +16,18 @@ namespace Mango.Services.CouponAPI.Controllers
         private ResponseDto _response;
         private IMapper _mapper;
 
+        //TODO: With Clean Architecture Try To Decouple This
+        /// <summary> 
+        /// SDE-Observation
+        /// You are coupling DbContext with Controllers. This will also couple 
+        /// EFCore with application. Changing ORM, will break solution.
+        /// Violating Separation Of Concerns principles at architect level
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="mapper"></param>
         public CouponAPIController(AppDbContext db, IMapper mapper)
         {
-            _db = db ;
+            _db = db;
             _mapper = mapper;
             _response = new ResponseDto();
         }
@@ -46,7 +55,7 @@ namespace Mango.Services.CouponAPI.Controllers
         {
             try
             {
-                Coupon coupon = _db.Coupons.First(c=>c.Id==id);
+                Coupon coupon = _db.Coupons.First(c => c.Id == id);
                 _response.Result = _mapper.Map<CouponDto>(coupon);
             }
             catch (Exception ex)
@@ -55,7 +64,7 @@ namespace Mango.Services.CouponAPI.Controllers
                 _response.IsSuccess = false;
                 _response.Message = ex.Message;
             }
-                return _response;
+            return _response;
         }
 
         [HttpGet]//-> internal name for URL
@@ -131,7 +140,7 @@ namespace Mango.Services.CouponAPI.Controllers
             try
             {
 
-                Coupon coupon = _db.Coupons.First(u => u.Id == id); 
+                Coupon coupon = _db.Coupons.First(u => u.Id == id);
                 // It will used id available in coupon
                 _db.Coupons.Remove(coupon);
                 _db.SaveChanges();

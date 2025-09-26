@@ -13,6 +13,15 @@ namespace Mango.Services.AuthAPI.Controllers
         private readonly IAuthService _authService;
         protected ResponseDto _response;
 
+        //TODO: With Clean Architecture Try To Decouple This
+        /// <summary> 
+        /// SDE-Observation
+        /// You are coupling DbContext with Controllers. This will also couple 
+        /// EFCore with application. Changing ORM, will break solution.
+        /// Violating Separation Of Concerns principles at architect level
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="mapper"></param>
         public AuthAPIController(IAuthService service)
         {
             _authService = service;
