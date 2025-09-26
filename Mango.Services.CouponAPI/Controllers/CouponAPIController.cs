@@ -87,6 +87,7 @@ namespace Mango.Services.CouponAPI.Controllers
 
         [HttpPost]//-> internal name for URL
         //[Route("{discount:int}")] //---> No need for this
+        [Authorize(Roles = "ADMIN")]
         public ResponseDto Post([FromBody] CouponDto couponDto)
         {
             try
@@ -112,6 +113,7 @@ namespace Mango.Services.CouponAPI.Controllers
         }
 
         [HttpPut]//-> internal name for URL
+        [Authorize(Roles = "ADMIN")]
         public ResponseDto Put([FromBody] CouponDto couponDto)
         {
             try
@@ -135,6 +137,8 @@ namespace Mango.Services.CouponAPI.Controllers
 
         [HttpDelete]//-> internal name for URL
         [Route("{id:int}")]
+        [Authorize(Roles = "ADMIN")]
+
         public ResponseDto Delete(int id)
         {
             try
