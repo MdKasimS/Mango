@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Mango.Services.AuthAPI.Controllers
 {
+    /// <summary>
+    /// You Will Notice Projects Are Completely Independent Of 
+    /// Other API Projects Or Even UI Project
+    /// </summary>
     [Route("api/auth")]
     [ApiController]
     public class AuthAPIController : ControllerBase

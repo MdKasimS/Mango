@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Mango.Services.CouponAPI.Controllers
 {
+    /// <summary>
+    /// You Will Notice Projects Are Completely Independent Of 
+    /// Other API Projects Or Even UI Project
+    /// </summary>
     [Route("api/coupon")]//-> this is shown in Swagger
     [ApiController]
     [Authorize]

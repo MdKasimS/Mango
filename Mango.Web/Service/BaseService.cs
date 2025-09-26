@@ -7,6 +7,10 @@ using static Mango.Web.Utility.SD;
 
 namespace Mango.Web.Service
 {
+    /// <summary>
+    /// You Will Notice Projects Are Completely Independent Of 
+    /// Other API Projects Or Even UI Project
+    /// </summary>
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
