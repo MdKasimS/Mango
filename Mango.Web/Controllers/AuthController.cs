@@ -46,9 +46,14 @@ namespace Mango.Web.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
+            //else
+            //{
+            //    ModelState.AddModelError("CustomError", responseDto.Message);
+            //    return View(model);
+            //}
             else
             {
-                ModelState.AddModelError("CustomError", responseDto.Message);
+                TempData["error"] = responseDto.Message;
                 return View(model);
             }
         }
@@ -90,8 +95,12 @@ namespace Mango.Web.Controllers
                 }
                 //And what if role is not assigned and user is created
             }
+            else
+            {
+                TempData["error"] = result.Message;
+            }
 
-            var roleList = new List<SelectListItem>()
+                var roleList = new List<SelectListItem>()
             {
                 new SelectListItem{Text=SD.RoleAdmin, Value=SD.RoleAdmin},
                 new SelectListItem{Text=SD.RoleCustomer, Value=SD.RoleCustomer }
