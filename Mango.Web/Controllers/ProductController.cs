@@ -3,6 +3,7 @@ using Mango.Web.Service;
 using Mango.Web.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Mango.Web.Controllers
 {
@@ -33,6 +34,30 @@ namespace Mango.Web.Controllers
             return View(list);
         }
         
+        public async Task<IActionResult> ProductCreate()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> ProductCreate(ProductDto product)
+        {
+            if (ModelState.IsValid)
+            {
+                ResponseDto? response = await _productService.CreateProductAsync(product);
+
+                //No use of result field yet.
+                if (response != null && response.IsSuccess)
+                {
+                    TempData["success"] = "Product Created Successfully!";
+                    return RedirectToAction(nameof(ProductIndex));
+                }
+                else
+                {
+                    TempData["error"] = response?.Message;
+                }
+            }
+            return View(product);
+        }
     }
 }

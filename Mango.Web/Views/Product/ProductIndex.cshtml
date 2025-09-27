@@ -4,7 +4,7 @@
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h1 class="text-white">Coupons List</h1>
+                <h1 class="text-white">Product List</h1>
             </div>
         </div>
     </div>
@@ -21,15 +21,20 @@
             <thead>
                 <tr>
                     <th>
-                        Coupon Code
+                        Name
                     </th>
                     <th>
-                        Discount Amount
+                        Category
                     </th>
                     <th>
-                        Minimum Amount
+                        Description
                     </th>
-                    <th></th>
+                    <th>
+                        Image
+                    </th>
+                    <th>
+                        Price
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -47,7 +52,7 @@
                             @dto.Description
                         </td>
                         <td>
-                            @dto.ImageUrl
+                            <a href="@dto.ImageUrl">@dto.ImageUrl</a>
                         </td>
                         <td>
                             @dto.Price.ToString("c")
