@@ -2,7 +2,7 @@
 {
     public class ProductDto
     {
-        public int Id { get; set; }
+        public int ProductId { get; set; }
         public string Name { get; set; }
         public double Price { get; set; }
         //TODO: Image uploading part is missing. Do yourself
