@@ -1,4 +1,5 @@
 using Mango.Web.Models;
+using Mango.Web.Service;
 using Mango.Web.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -95,5 +96,42 @@ namespace Mango.Web.Controllers
         }
 
         //TODO: Implement Edit View
+
+        public async Task<IActionResult> CouponEdit(int couponId)
+        {
+            ResponseDto? response = await _couponService.GetCouponByIdAsync(couponId);
+
+            if (response != null && response.IsSuccess)
+            {
+                CouponDto? model = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
+                return View(model);
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+            //We can return 404 view here. For simplicity it is kept as it is
+            return NotFound();
+        }
+
+        //This is called in CouponEdit view's Delete button
+        [HttpPost]
+        public async Task<IActionResult> CouponEdit(CouponDto couponDto)
+        {
+
+            ResponseDto? response = await _couponService.UpdateCouponAsync(couponDto);
+
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = "Coupon Updated Successfully!";
+                return RedirectToAction(nameof(CouponIndex));
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+
+            return View(couponDto);
+        }
     }
 }

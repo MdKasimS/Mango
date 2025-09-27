@@ -44,6 +44,9 @@
                         <td> @dto.MinAmount.ToString("c")
                         </td>
                         <td>
+                            <a asp-action="CouponEdit" asp-route-couponId="@dto.CouponId" class="btn btn-success">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
                             <a asp-action="CouponDelete" asp-route-couponId="@dto.CouponId" class="btn btn-danger">
                                 <i class="bi bi-trash"></i>
                             </a>
