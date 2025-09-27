@@ -98,6 +98,44 @@ namespace Mango.Web.Controllers
         }
 
         //TODO: Implement Edit View
+
+        public async Task<IActionResult> ProductEdit(int productId)
+        {
+            ResponseDto? response = await _productService.GetProductByIdAsync(productId);
+
+            if (response != null && response.IsSuccess)
+            {
+                ProductDto? model = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+                return View(model);
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+            //We can return 404 view here. For simplicity it is kept as it is
+            return NotFound();
+        }
+
+        //This is called in ProductEdit view's Delete button
+        [HttpPost]
+        public async Task<IActionResult> ProductEdit(ProductDto productDto)
+        {
+
+            ResponseDto? response = await _productService.UpdateProductAsync(productDto);
+
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = "Product Updated Successfully!";
+                return RedirectToAction(nameof(ProductIndex));
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+
+            return View(productDto);
+        }
+
     }
 }
 
