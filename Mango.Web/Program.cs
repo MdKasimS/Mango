@@ -24,6 +24,7 @@ builder.Services.AddHttpClient();
  This is particularly useful for services that make HTTP calls, as it helps in reusing HttpClient instances efficiently.
 */
 
+//TODO: Wht it worked without this earlier
 builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
