@@ -24,6 +24,7 @@ builder.Services.AddHttpClient();
  This is particularly useful for services that make HTTP calls, as it helps in reusing HttpClient instances efficiently.
 */
 
+builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
 SD.CouponAPIBase = builder.Configuration["ServiceUrls:CouponAPI"];
@@ -33,9 +34,9 @@ SD.ProductAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
 
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();
+builder.Services.AddScoped<IProductService,ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IProductService,ProductService>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
