@@ -16,6 +16,11 @@ namespace Mango.Web.Models
         public string ImageUrl { get; set; }
         public string CategoryName { get; set; }
         public string Description { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Since its a DTO, we can add and fields and AutoMapper
+        /// dynamically handles by matching names and additional attributes provided
+        /// </summary>
         [Range(1,100)]
         public int Count { get; set; } = 1;
     }
