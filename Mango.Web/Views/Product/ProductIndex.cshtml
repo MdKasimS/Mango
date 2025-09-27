@@ -24,17 +24,18 @@
                         Name
                     </th>
                     <th>
-                        Category
+                        Category Name
                     </th>
-                    <th>
+                    @* <th>
                         Description
                     </th>
                     <th>
                         Image
-                    </th>
+                    </th> *@
                     <th>
                         Price
                     </th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -48,17 +49,20 @@
                         <td>
                             @dto.CategoryName
                         </td>
-                        <td>
+                        @* <td>
                             @dto.Description
                         </td>
                         <td>
                             <a href="@dto.ImageUrl">@dto.ImageUrl</a>
-                        </td>
+                        </td> *@
                         <td>
                             @dto.Price.ToString("c")
                         </td>
                         
                         <td>
+                            <a asp-action="ProductEdit" asp-route-productId="@dto.ProductId" class="btn btn-success">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
                             <a asp-action="ProductDelete" asp-route-productId="@dto.ProductId" class="btn btn-danger">
                                 <i class="bi bi-trash"></i>
                             </a>
