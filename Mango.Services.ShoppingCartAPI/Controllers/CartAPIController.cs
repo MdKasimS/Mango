@@ -78,6 +78,11 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                     }
                 }
                 response.Result = cartDto;
+
+                //TODOD: For now, cart values are updating as of UserId provided.
+                //Check second last commit for more details before this commit.
+                //This works for now with user only client. And no other client present in flow -
+                //like inventory management, order management etc.
             }
             catch (Exception ex)
             {
