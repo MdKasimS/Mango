@@ -20,7 +20,12 @@ namespace Mango.Services.ShoppingCartAPI.Service
             /// It will map correctly with base address of API we need to communicate
             /// instead accessing it here, we access from central place - DI container.
             var client = _httpClientFactory.CreateClient("Product");
-            var response = await client.GetAsync("/api/product"); 
+
+            /// If product service is not working, this will give error. 
+            /// Show either page for this error.
+            /// TODO: ServiceDiscovery can be of any help? Try what it is.
+
+            var response = await client.GetAsync($"/api/product"); 
             
             var apiContent = await response.Content.ReadAsStringAsync();
             var resp = JsonConvert.DeserializeObject<ResponseDto>(apiContent);

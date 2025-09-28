@@ -16,7 +16,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
     {
         private readonly AppDbContext _db;
         private readonly IMapper _mapper;
-        private readonly IProductService _productService;
+        private IProductService _productService;
 
         private readonly ResponseDto _response;
         public CartAPIController(AppDbContext db, IMapper mapper, IProductService productService)
