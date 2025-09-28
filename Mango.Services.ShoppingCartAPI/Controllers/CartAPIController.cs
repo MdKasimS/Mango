@@ -46,7 +46,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                     /// ProductId must be avaialable in database, else it will fail.
                     /// This is tight coupling with database.
                     /// SDE Observation.
-                    item.Product = productDtos.FirstOrDefault(u => u.ProductId == item.ProductId);
+                    item.Product = productDtos.FirstOrDefault(u => u.Id == item.ProductId);
                     cart.CartHeader.CartTotal += (item.Count * item.Product.Price); 
                 }
 
