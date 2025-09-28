@@ -38,7 +38,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                     _db.CartHeaders.Add(cartHeader);
                     await _db.SaveChangesAsync();
 
-                    cartDto.CartDetails.First().CartHeaderId = cartHeader.Id;
+                    cartDto.CartDetails.First().CartHeaderId = cartHeader.CartHeaderId;
                     CartDetails cartDetails = _mapper.Map<CartDetails>(cartDto.CartDetails.First());
                     _db.CartDetails.Add(cartDetails);
                     await _db.SaveChangesAsync();
@@ -52,12 +52,12 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
 
                     var cartDetailsFromDb = await _db.CartDetails.AsNoTracking().FirstOrDefaultAsync(
                         u => u.ProductId == cartDto.CartDetails.First().ProductId 
-                        && u.CartHeaderId == cartHeaderFromDb.Id);
+                        && u.CartHeaderId == cartHeaderFromDb.CartHeaderId);
 
                     if (cartDetailsFromDb == null)
                     {
                         //create cart details
-                        cartDto.CartDetails.First().CartHeaderId = cartHeaderFromDb.Id;
+                        cartDto.CartDetails.First().CartHeaderId = cartHeaderFromDb.CartHeaderId;
                         CartDetails cartDetails = _mapper.Map<CartDetails>(cartDto.CartDetails.First());
                         _db.CartDetails.Add(cartDetails);
                         await _db.SaveChangesAsync();
@@ -69,7 +69,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
 
                         //TODO: Review if we need to map all properties or just the count
                         cartDto.CartDetails.First().CartHeaderId = cartDetailsFromDb.CartHeaderId;
-                        cartDto.CartDetails.First().Id = cartDetailsFromDb.Id;
+                        cartDto.CartDetails.First().CartDetailsId = cartDetailsFromDb.CartDetailsId;
 
                         CartDetails cartDetails = _mapper.Map<CartDetails>(cartDto.CartDetails.First());
                         _db.CartDetails.Update(cartDetails);
