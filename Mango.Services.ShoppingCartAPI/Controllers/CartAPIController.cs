@@ -51,7 +51,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                     //TODO: Review this part AsNoTracking() how it can benfit us here
 
                     var cartDetailsFromDb = await _db.CartDetails.AsNoTracking().FirstOrDefaultAsync(
-                        u => u.ProductId == cartDto.CartDetails.First().ProductId 
+                        u => u.ProductId == cartDto.CartDetails.First().ProductId
                         && u.CartHeaderId == cartHeaderFromDb.CartHeaderId);
 
                     if (cartDetailsFromDb == null)
@@ -92,5 +92,36 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
             return response;
         }
 
+
+        [HttpPost("RemoveCart")]
+        public async Task<ResponseDto> RemoveCart([FromBody]int cartDetailsId)
+        {
+            try
+            {
+                CartDetails cartDetails = _db.CartDetails.First(u => u.CartDetailsId == cartDetailsId);
+
+                int totalCountOfCartItem = _db.CartDetails
+                                              .Where(u => u.CartHeaderId == cartDetails.CartHeaderId).Count();
+
+                _db.CartDetails.Remove(cartDetails);
+                if (totalCountOfCartItem == 1)
+                {
+                    var cartHeaderToRemove = await _db.CartHeaders
+                                             .FirstOrDefaultAsync(u => u.CartHeaderId == cartDetails.CartHeaderId);
+
+                    _db.CartHeaders.Remove(cartHeaderToRemove);
+                }
+
+                await _db.SaveChangesAsync();
+
+                response.Result = true; 
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
     }
 }
