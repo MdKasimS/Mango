@@ -29,7 +29,8 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
         {
             try
             {
-                var cartHeaderFromDb = await _db.CartHeaders.FirstOrDefaultAsync(u => u.UserId == cartDto.CartHeader.UserId);
+                var cartHeaderFromDb = await _db.CartHeaders.AsNoTracking()
+                                                .FirstOrDefaultAsync(u => u.UserId == cartDto.CartHeader.UserId);
                 if (cartHeaderFromDb == null)
                 {
                     // Create new cart header and details
@@ -49,7 +50,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
 
                     //TODO: Review this part AsNoTracking() how it can benfit us here
 
-                    var cartDetailsFromDb = await _db.CartDetails.FirstOrDefaultAsync(
+                    var cartDetailsFromDb = await _db.CartDetails.AsNoTracking().FirstOrDefaultAsync(
                         u => u.ProductId == cartDto.CartDetails.First().ProductId 
                         && u.CartHeaderId == cartHeaderFromDb.Id);
 
