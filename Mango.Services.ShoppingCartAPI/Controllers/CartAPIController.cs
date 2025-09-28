@@ -5,6 +5,7 @@ using Mango.Services.ShoppingCartAPI.Models.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.PortableExecutable;
 
 namespace Mango.Services.ShoppingCartAPI.Controllers
 {
@@ -34,19 +35,12 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                     // Create new cart header and details
                     CartHeader cartHeader = _mapper.Map<CartHeader>(cartDto.CartHeader);
                     _db.CartHeaders.Add(cartHeader);
-                    _db.SaveChanges();
-                    //_db.SaveChangesAsync();
+                    await _db.SaveChangesAsync();
 
                     cartDto.CartDetails.First().CartHeaderId = cartHeader.Id;
                     CartDetails cartDetails = _mapper.Map<CartDetails>(cartDto.CartDetails.First());
                     _db.CartDetails.Add(cartDetails);
-                    _db.SaveChanges();
-                    //_db.SaveChangesAsync();
-
-                    foreach (var detail in cartDto.CartDetails)
-                    {
-                        detail.CartHeaderId = cartDto.CartHeader.Id;
-                    }
+                    await _db.SaveChangesAsync();
                 }
                 else
                 {
@@ -65,8 +59,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                         cartDto.CartDetails.First().CartHeaderId = cartHeaderFromDb.Id;
                         CartDetails cartDetails = _mapper.Map<CartDetails>(cartDto.CartDetails.First());
                         _db.CartDetails.Add(cartDetails);
-                        _db.SaveChanges();
-                        //_db.SaveChangesAsync();
+                        await _db.SaveChangesAsync();
                     }
                     else
                     {
@@ -79,8 +72,8 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
 
                         CartDetails cartDetails = _mapper.Map<CartDetails>(cartDto.CartDetails.First());
                         _db.CartDetails.Update(cartDetails);
-                        _db.SaveChanges();
-                        //_db.SaveChangesAsync();
+                        //_db.SaveChanges();
+                        await _db.SaveChangesAsync();
                     }
                 }
                 response.Result = cartDto;
