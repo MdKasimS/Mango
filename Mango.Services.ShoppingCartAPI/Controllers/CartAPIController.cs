@@ -15,12 +15,40 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
     {
         private readonly AppDbContext _db;
         private readonly IMapper _mapper;
-        private readonly ResponseDto response;
+        private readonly ResponseDto _response;
         public CartAPIController(AppDbContext db, IMapper mapper)
         {
             _db = db;
             _mapper = mapper;
-            response = new ResponseDto();
+            _response = new ResponseDto();
+        }
+
+        [HttpGet("GetCart/{userId}")]
+        public async Task<ResponseDto> GetCart(string userId)
+        {
+            try
+            {
+                CartDto cart = new CartDto()
+                {
+                    CartHeader = _mapper.Map<CartHeaderDto>(_db.CartHeaders.First(u => u.UserId == userId))
+                };
+                cart.CartDetails = _mapper.Map<IEnumerable<CartDetailsDto>>(_db.CartDetails
+                                    .Where(u => u.CartHeaderId == cart.CartHeader.CartHeaderId));
+
+                foreach(var item in cart.CartDetails)
+                {
+                    cart.CartHeader.CartTotal += (item.Count * item.Product.Price); 
+                }
+
+                _response.Result = cart;
+                return _response;
+            }
+            catch(Exception ex)
+            {
+                _response.Result = false;
+                _response.Message = ex.Message;
+            }
+            return _response;
         }
 
         //TODO: Draw relations between all dtos and models related to cart
@@ -77,7 +105,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                         await _db.SaveChangesAsync();
                     }
                 }
-                response.Result = cartDto;
+                _response.Result = cartDto;
 
                 //TODOD: For now, cart values are updating as of UserId provided.
                 //Check second last commit for more details before this commit.
@@ -86,10 +114,10 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
             }
             catch (Exception ex)
             {
-                response.IsSuccess = false;
-                response.Message = ex.Message;
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
             }
-            return response;
+            return _response;
         }
 
 
@@ -114,14 +142,14 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
 
                 await _db.SaveChangesAsync();
 
-                response.Result = true; 
+                _response.Result = true; 
             }
             catch (Exception ex)
             {
-                response.IsSuccess = false;
-                response.Message = ex.Message;
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
             }
-            return response;
+            return _response;
         }
     }
 }
