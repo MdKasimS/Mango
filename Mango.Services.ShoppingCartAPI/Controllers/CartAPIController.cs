@@ -47,6 +47,8 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                 cart.CartDetails = _mapper.Map<IEnumerable<CartDetailsDto>>(_db.CartDetails
                                     .Where(u => u.CartHeaderId == cart.CartHeader.CartHeaderId));
 
+                /// Why to fetch all products? Improvement scope here. 
+                /// TODO: Improve loading of products in cart.
                 IEnumerable<ProductDto> productDtos = await _productService.GetProducts();
 
                 foreach (var item in cart.CartDetails)
