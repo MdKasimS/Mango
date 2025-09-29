@@ -19,10 +19,14 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICouponService, CouponService>();
+
 /// Another way to configure Httpclient service.
 /// The other way is shown in Web project
 builder.Services.AddHttpClient("Product", u=> u.BaseAddress =
         new Uri(builder.Configuration["ServiceUrls:ProductAPI"]));
+builder.Services.AddHttpClient("Coupon", u => u.BaseAddress =
+        new Uri(builder.Configuration["ServiceUrls:CouponAPI"]));
 
 
 builder.Services.AddControllers();

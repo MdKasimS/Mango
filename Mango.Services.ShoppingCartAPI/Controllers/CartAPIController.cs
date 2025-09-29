@@ -16,14 +16,22 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
     {
         private readonly AppDbContext _db;
         private readonly IMapper _mapper;
+
+        /// <summary>
+        /// Dont Make it private readonly, else it will be null.
+        /// </summary>
         private IProductService _productService;
+        private ICouponService _couponService;
 
         private readonly ResponseDto _response;
-        public CartAPIController(AppDbContext db, IMapper mapper, IProductService productService)
+        public CartAPIController(AppDbContext db, IMapper mapper
+                                , IProductService productService
+                                , ICouponService couponService)
         {
             _db = db;
             _mapper = mapper;
             _productService = productService;
+            _couponService = couponService;
             _response = new ResponseDto();
         }
 
@@ -47,6 +55,11 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                     /// This is tight coupling with database.
                     /// SDE Observation.
                     item.Product = productDtos.FirstOrDefault(u => u.Id == item.ProductId);
+
+                    /// Apply coupon here. Fetch Coupon details, if available and active
+                    /// compute final prices accordingly
+                    /// update tha cart and return.
+
                     cart.CartHeader.CartTotal += (item.Count * item.Product.Price); 
                 }
 
