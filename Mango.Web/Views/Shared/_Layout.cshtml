@@ -51,18 +51,14 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav">
-                        <li>
-                        </li>
                         @if (!User.Identity.IsAuthenticated)
                         {
-
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Auth" asp-action="Login">Login</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Auth" asp-action="Register">Register</a>
                             </li>
-
                         }
                         else
                         {
@@ -73,6 +69,7 @@
                                 <a class="nav-link" asp-controller="Auth" asp-action="Logout">Logout</a>
                             </li>
                         }
+                    
                     </ul>
                 </div>
             </div>
