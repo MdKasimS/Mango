@@ -48,8 +48,8 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                                     .Where(u => u.CartHeaderId == cart.CartHeader.CartHeaderId));
 
                 IEnumerable<ProductDto> productDtos = await _productService.GetProducts();
-                 
-                foreach(var item in cart.CartDetails)
+
+                foreach (var item in cart.CartDetails)
                 {
                     /// ProductId must be avaialable in database, else it will fail.
                     /// This is tight coupling with database.
@@ -58,15 +58,25 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
 
                     /// Apply coupon here. Fetch Coupon details, if available and active
                     /// compute final prices accordingly
-                    /// update tha cart and return.
+                    /// update tha cart and return. Checking coupon here enables us to
+                    /// apply coupon productwise.
 
-                    cart.CartHeader.CartTotal += (item.Count * item.Product.Price); 
+                    cart.CartHeader.CartTotal += (item.Count * item.Product.Price);
+                }
+
+                if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
+                {
+                    CouponDto coupon = await _couponService.GetCoupon(cart.CartHeader.CouponCode);
+                    if(coupon!=null && cart.CartHeader.CartTotal > coupon.MinAmount)
+                    {
+                        cart.CartHeader.CartTotal -= coupon.DiscountAmount;
+                        cart.CartHeader.Discount = coupon.DiscountAmount;
+                    }
                 }
 
                 _response.Result = cart;
-                return _response;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _response.Result = false;
                 _response.Message = ex.Message;
@@ -186,7 +196,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
 
 
         [HttpPost("RemoveCart")]
-        public async Task<ResponseDto> RemoveCart([FromBody]int cartDetailsId)
+        public async Task<ResponseDto> RemoveCart([FromBody] int cartDetailsId)
         {
             try
             {
@@ -206,7 +216,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
 
                 await _db.SaveChangesAsync();
 
-                _response.Result = true; 
+                _response.Result = true;
             }
             catch (Exception ex)
             {
