@@ -28,9 +28,9 @@ namespace Mango.Web.Controllers
             var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?
                                     .FirstOrDefault()?.Value;
 
-            var response =  await _cartService.GetCartByUserIdAsync(userId);    
+            ResponseDto? response =  await _cartService.GetCartByUserIdAsync(userId);    
             
-            if(response!=null)
+            if(response!=null && response.IsSuccess)
             {
                 CartDto cartDto = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(response.Result));
                 return cartDto;

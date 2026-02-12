@@ -31,13 +31,13 @@ namespace Mango.Web.Service
             });
         }
 
-        public async Task<ResponseDto?> RemoveFromCartAsync(int cardDetailsId)
+        public async Task<ResponseDto?> RemoveFromCartAsync(int cartDetailsId)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = SD.ApiType.POST,
                 Url = SD.ShoppingCartAPIBase + "/api/cart/RemoveCart/" ,
-                Data = cardDetailsId
+                Data = cartDetailsId
             });
         }
 
