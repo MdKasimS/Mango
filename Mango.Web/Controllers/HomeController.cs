@@ -10,11 +10,13 @@ namespace Mango.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IProductService _productService;
+        private readonly ICartService _cartService;
         private readonly ResponseDto _response;
-        public HomeController(IProductService productService)
+        public HomeController(IProductService productService, ICartService cartService)
         {
             _productService = productService;
             _response = new ResponseDto();
+            _cartService = cartService;
         }
         public async Task<IActionResult> Index()
         {
@@ -55,6 +57,33 @@ namespace Mango.Web.Controllers
             return View(model);
         }
 
+        [Authorize]
+        [HttpPost]
+        [ActionName("ProductDetails")]
+        public async Task<IActionResult> ProductDetails(ProductDto productDto)
+        {
+            CartDto cartDto = new CartDto()
+            {
+                CartHeader = new CartHeaderDto()
+                {
+                    UserId = User.Claims.Where(u => u.Type == JwtClaimTypes.Subject)?.FirstOrDefault()?.Value
+                }
+            };
+
+            ResponseDto? response = await _productService.GetProductByIdAsync(productId);
+            if (response != null && response.IsSuccess)
+            {
+                //TODO: De Serialization is not working correctly. It did not mapped Ids for CouponId
+                model = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+
+            //This View() is connected to HomeIndex.cshtml
+            return View(model);
+        }
 
         public IActionResult Privacy()
         {
