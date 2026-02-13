@@ -1,3 +1,4 @@
+using Duende.IdentityModel;
 using Mango.Web.Models;
 using Mango.Web.Service.IService;
 using Microsoft.AspNetCore.Authorization;
@@ -70,11 +71,21 @@ namespace Mango.Web.Controllers
                 }
             };
 
-            ResponseDto? response = await _productService.GetProductByIdAsync(productId);
+            CartDetailsDto cartDetails = new CartDetailsDto()
+            {
+                Count = productDto.Count,
+                ProductId = productDto.ProductId,
+            };
+
+            List<CartDetailsDto> cartDetailsDtos = new() { cartDetails};
+            cartDto.CartDetails = cartDetailsDtos;
+
+            ResponseDto? response = await _cartService.UpsertCartAsync(cartDto);
+
             if (response != null && response.IsSuccess)
             {
-                //TODO: De Serialization is not working correctly. It did not mapped Ids for CouponId
-                model = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+                TempData["success"] = "Item added in the cart!";
+                return RedirectToAction(nameof(Index));
             }
             else
             {
@@ -82,7 +93,7 @@ namespace Mango.Web.Controllers
             }
 
             //This View() is connected to HomeIndex.cshtml
-            return View(model);
+            return View(productDto);
         }
 
         public IActionResult Privacy()
