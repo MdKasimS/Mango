@@ -19,6 +19,9 @@ namespace Mango.Web.Controllers
         [Authorize]
         public async Task<IActionResult> CartIndex()
         {
+            //TODO: Continue shopping is not working
+
+            //TODO: Apply coupon should have dropw down
             return View(await LoadCartDtoBasedOnLoggedInUser());
         }
 
@@ -30,6 +33,7 @@ namespace Mango.Web.Controllers
 
             ResponseDto? response =  await _cartService.GetCartByUserIdAsync(userId);    
             
+            //TODO: Bug - If user don't have any item in cart, for that user CartIndex doesn't load
             if(response!=null && response.IsSuccess)
             {
                 CartDto cartDto = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(response.Result));
