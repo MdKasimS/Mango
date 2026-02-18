@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 *.bkp
+/.$MVC_Diagram_DotnetMastery.drawio.dtmp
