@@ -13,6 +13,9 @@ namespace Mango.Services.ProductAPI.Controllers
     public class ProductAPIController : ControllerBase
     {
         private readonly AppDbContext _db;
+
+        //Note: Such [Routes + Response + Mapper] is not available in MVC (basically not needed),
+        // becuase IActionResult handles it by default
         private ResponseDto _response;
         private IMapper _mapper;
 
