@@ -126,7 +126,6 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
             return _response;
         }
 
-
         //TODO: Draw relations between all dtos and models related to cart
         [HttpPost("CartUpsert")]
         public async Task<ResponseDto> CartUpsert(CartDto cartDto)
