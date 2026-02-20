@@ -85,6 +85,7 @@ namespace Mango.Web.Controllers
             //TODO: Bug - If user don't have any item in cart, for that user CartIndex doesn't load
             if (response != null && response.IsSuccess)
             {
+                //TODO: For tutor, this line is not giving exception for user with 0 items in cart.
                 CartDto cartDto = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(response.Result));
                 return cartDto;
             }
