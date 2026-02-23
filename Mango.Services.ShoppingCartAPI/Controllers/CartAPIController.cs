@@ -47,36 +47,42 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                 {
                     CartHeader = _mapper.Map<CartHeaderDto>(_db.CartHeaders.FirstOrDefault(u => u.UserId == userId))
                 };
-                cart.CartDetails = _mapper.Map<IEnumerable<CartDetailsDto>>(_db.CartDetails
-                                .Where(u => u.CartHeaderId == cart.CartHeader.CartHeaderId));
 
-                /// Why to fetch all products? Improvement scope here. 
-                /// TODO: Improve loading of products in cart.
-                IEnumerable<ProductDto> productDtos = await _productService.GetProducts();
-
-                foreach (var item in cart.CartDetails)
+                if (cart.CartHeader != null)
                 {
-                    /// ProductId must be avaialable in database, else it will fail.
-                    /// This is tight coupling with database.
-                    /// SDE Observation.
-                    item.Product = productDtos.FirstOrDefault(u => u.Id == item.ProductId);
 
-                    /// Apply coupon here. Fetch Coupon details, if available and active
-                    /// compute final prices accordingly
-                    /// update tha cart and return. Checking coupon here enables us to
-                    /// apply coupon productwise.
+                    cart.CartDetails = _mapper.Map<IEnumerable<CartDetailsDto>>(_db.CartDetails
+                                    .Where(u => u.CartHeaderId == cart.CartHeader.CartHeaderId));
 
-                    cart.CartHeader.CartTotal += (item.Count * item.Product.Price);
-                }
+                    /// Why to fetch all products? Improvement scope here. 
+                    /// TODO: Improve loading of products in cart.
+                    IEnumerable<ProductDto> productDtos = await _productService.GetProducts();
 
-                if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
-                {
-                    CouponDto coupon = await _couponService.GetCoupon(cart.CartHeader.CouponCode);
-                    if (coupon != null && cart.CartHeader.CartTotal > coupon.MinAmount)
+                    foreach (var item in cart.CartDetails)
                     {
-                        cart.CartHeader.CartTotal -= coupon.DiscountAmount;
-                        cart.CartHeader.Discount = coupon.DiscountAmount;
+                        /// ProductId must be avaialable in database, else it will fail.
+                        /// This is tight coupling with database.
+                        /// SDE Observation.
+                        item.Product = productDtos.FirstOrDefault(u => u.Id == item.ProductId);
+
+                        /// Apply coupon here. Fetch Coupon details, if available and active
+                        /// compute final prices accordingly
+                        /// update tha cart and return. Checking coupon here enables us to
+                        /// apply coupon productwise.
+
+                        cart.CartHeader.CartTotal += (item.Count * item.Product.Price);
                     }
+
+                    if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
+                    {
+                        CouponDto coupon = await _couponService.GetCoupon(cart.CartHeader.CouponCode);
+                        if (coupon != null && cart.CartHeader.CartTotal > coupon.MinAmount)
+                        {
+                            cart.CartHeader.CartTotal -= coupon.DiscountAmount;
+                            cart.CartHeader.Discount = coupon.DiscountAmount;
+                        }
+                    }
+
                 }
 
                 _response.Result = cart;
