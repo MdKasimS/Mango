@@ -94,7 +94,7 @@ namespace Mango.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EmailCART(CartDto cartDto)
+        public async Task<IActionResult> EmailCart(CartDto cartDto)
         {
             //Note: Tutor is using EmailCart instead EmailCartAsync method name
             ResponseDto? response = await _cartService.EmailCartAsync(cartDto);
