@@ -6,14 +6,10 @@ namespace Mango.MessageBus
 {
     public class AzureServiceBusMessageProducer : IMessageBus
     {
-        public async Task PublishMessage(object message, string topic_queue_name)
+        // Note: Its equivalent to Publish message in Azure service bus.
+        public async Task SendMessage(object message, string queueName)
         {
             //await using var client = new ServiceBusClient();
-        }
-
-        public Task SendMessage(object message, string queueName)
-        {
-            throw new NotImplementedException();
         }
     }
 }
