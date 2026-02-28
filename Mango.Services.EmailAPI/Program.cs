@@ -1,5 +1,6 @@
 using Mango.MessageBus;
 using Mango.Services.EmailAPI.Data;
+using Mango.Services.EmailAPI.Extension;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -51,6 +52,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 ApplyMigration();
+
+app.UseRabbitMQMessageConsumer();
 
 app.Run();
 
