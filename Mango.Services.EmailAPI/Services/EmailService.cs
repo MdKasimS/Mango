@@ -49,7 +49,7 @@ namespace Mango.Services.EmailAPI.Services
 
                 await using var _db = new AppDbContext(_dbOptions);
                 await _db.EmailLoggers.AddAsync(emailLogger);
-                _db.SaveChangesAsync();
+                await _db.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)

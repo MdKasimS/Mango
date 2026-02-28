@@ -1,4 +1,5 @@
 ﻿using Mango.Services.EmailAPI.Models.Dto;
+using Mango.Services.EmailAPI.Services;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -19,12 +20,18 @@ namespace Mango.Services.EmailAPI.Messaging
         private readonly string _messageBusConnectionString;
         private readonly string _emailCartQueue;
         private readonly IConfiguration _configuration;
+
+        //TODO: Because its is singleton, we don't need interface
+        private readonly EmailService _emailService;
         private IConnection _connection;
         private IChannel _channel;
 
-        public RabbitMQMessageConsumer(IOptions<MessageQueueSettings> options, IConfiguration configuration)
+        public RabbitMQMessageConsumer(IOptions<MessageQueueSettings> options
+                                        , IConfiguration configuration
+                                        , EmailService emailService)
         {
             _configuration = configuration;
+            _emailService = emailService;
             _messageBusConnectionString = options.Value.RabbitMQ.ConnectionString;
 
             /* TODO: Here GetValue was not working somehow
@@ -66,8 +73,7 @@ namespace Mango.Services.EmailAPI.Messaging
 
                 try
                 {
-                    //await _emailService.EmailCartAndLog(objMessage);
-
+                    await _emailService.EmailCartAndLog(objMessage);
                     _channel.BasicAckAsync(args.DeliveryTag, false);
                 }
                 catch
