@@ -1,4 +1,6 @@
-﻿using Mango.MessageBus;
+﻿//using Mango.MessageBus;
+
+using Mango.Services.EmailAPI.Messaging;
 
 namespace Mango.Services.EmailAPI.Extension
 {

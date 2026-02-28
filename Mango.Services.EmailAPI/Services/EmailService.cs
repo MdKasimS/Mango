@@ -1,6 +1,6 @@
-﻿using Mango.MessageBus.Dto;
-using Mango.Services.EmailAPI.Data;
+﻿using Mango.Services.EmailAPI.Data;
 using Mango.Services.EmailAPI.Models;
+using Mango.Services.EmailAPI.Models.Dto;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -57,5 +57,6 @@ namespace Mango.Services.EmailAPI.Services
                 return false;
             }
         }
+
     }
 }

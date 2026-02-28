@@ -1,4 +1,4 @@
-﻿using Mango.MessageBus.Dto;
+﻿using Mango.Services.EmailAPI.Models.Dto;
 
 namespace Mango.Services.EmailAPI.Services
 {
