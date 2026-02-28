@@ -7,14 +7,14 @@ using System.Text.Json.Serialization;
 
 namespace Mango.MessageBus
 {
-    public class RabbitMQAuthMessageSender : IMessageBus
+    public class RabbitMQMessageProducer : IMessageBus
     {
         private readonly string _hostName;
         private readonly string _userName;
         private readonly string _password;
         private IConnection _connection;
 
-        public RabbitMQAuthMessageSender()
+        public RabbitMQMessageProducer()
         {
             // TODO: Make it DI specific code that can be passed via args as well
             _hostName = "localhost";

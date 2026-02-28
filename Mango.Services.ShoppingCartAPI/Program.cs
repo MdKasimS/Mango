@@ -27,7 +27,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 // Note: Do remember, this is unlike tutor's Azure Service Bus. It uses RabbitMQ implementation in main branch itself.
-builder.Services.AddScoped<IMessageBus, RabbitMQAuthMessageSender>();
+builder.Services.AddScoped<IMessageBus, RabbitMQMessageProducer>();
 
 /// Another way to configure Httpclient service.
 /// The other way is shown in Web project
