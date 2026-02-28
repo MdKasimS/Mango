@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-
 using RabbitMQ.Client;
-
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -60,6 +58,8 @@ namespace Mango.Services.AuthAPI.RabbitMqSender
                 body: body // byte[] is accepted; will be wrapped as ReadOnlyMemory<byte>
             );
 
+            channel.DisposeAsync();
+            _connection.Dispose();
         }
     }
 }

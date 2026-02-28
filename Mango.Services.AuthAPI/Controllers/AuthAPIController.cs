@@ -1,4 +1,5 @@
 ﻿using Mango.Services.AuthAPI.Models.Dto;
+using Mango.Services.AuthAPI.RabbitMqSender;
 using Mango.Services.AuthAPI.Service;
 using Mango.Services.AuthAPI.Service.IService;
 using Microsoft.AspNetCore.Http;
@@ -16,6 +17,11 @@ namespace Mango.Services.AuthAPI.Controllers
     {
         private readonly IAuthService _authService;
         protected ResponseDto _response;
+        protected IConfiguration _configuration;
+
+        // TODO: I have added respective interface & its concrete class in Mango.Integration. Switch to use that one.
+        // Since we are not going to keep any clodu based MQ as primary queuing technology.
+        protected IRabbitMQAuthMessageSender _messageBus;
 
         //TODO: With Clean Architecture Try To Decouple This
         /// <summary> 
@@ -26,10 +32,12 @@ namespace Mango.Services.AuthAPI.Controllers
         /// </summary>
         /// <param name="db"></param>
         /// <param name="mapper"></param>
-        public AuthAPIController(IAuthService service)
+        public AuthAPIController(IAuthService service, IRabbitMQAuthMessageSender messageBus, IConfiguration configuration)
         {
             _authService = service;
             _response = new();
+            _messageBus = messageBus;
+            _configuration = configuration;
         }
 
         [HttpPost("register")]
@@ -44,7 +52,7 @@ namespace Mango.Services.AuthAPI.Controllers
                 _response.Message = errorMessage;
                 return BadRequest(_response);
             }
-
+            await _messageBus.SendMessage(model.Email, _configuration.GetValue<string>("TopicAndQueueNames:RegisterUserQueue"));
             return Ok(_response);
         }
 
