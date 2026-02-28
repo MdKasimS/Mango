@@ -19,6 +19,7 @@ var mqSettings = builder.Configuration
 
 if (mqSettings.Provider == "RabbitMQ")
 {
+    //TODO: Singleton service cannot use scoped services. DbContext is scoped service. Hence need variation of DbContext.
     builder.Services.AddSingleton<IMessageConsumer, RabbitMQMessageConsumer>();
 }
 /// Note: Will be used when ServiceBusConsumer will be created
