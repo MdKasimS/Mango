@@ -96,8 +96,15 @@ namespace Mango.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> EmailCart(CartDto cartDto)
         {
+            //TODO: Seems some bug here. Why cartDto received from Ui doesn't conatins cartDetails? Why we see it as null when message is sent?
+            CartDto cart = await LoadCartDtoBasedOnLoggedInUser();
+
+            //TODO: Why are we popluating/constructing cartDto in cart above and passing it to below?
+            cart.CartHeader.Email = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Email)?
+                                    .FirstOrDefault()?.Value;
+
             //Note: Tutor is using EmailCart instead EmailCartAsync method name
-            ResponseDto? response = await _cartService.EmailCartAsync(cartDto);
+            ResponseDto? response = await _cartService.EmailCartAsync(cart);
 
             if (response != null && response.IsSuccess)
             {
