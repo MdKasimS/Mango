@@ -20,7 +20,7 @@ namespace Mango.Services.AuthAPI.Controllers
         protected IConfiguration _configuration;
 
         // TODO: I have added respective interface & its concrete class in Mango.Integration. Switch to use that one.
-        // Since we are not going to keep any clodu based MQ as primary queuing technology.
+        // Since we are not going to keep any cloud based MQ as primary queuing technology.
         protected IRabbitMQAuthMessageSender _messageBus;
 
         //TODO: With Clean Architecture Try To Decouple This
