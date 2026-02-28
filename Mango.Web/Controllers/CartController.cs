@@ -46,8 +46,9 @@ namespace Mango.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ApplyCoupon(CartDto cartDto)
         {
-            var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?
-                                    .FirstOrDefault()?.Value;
+            // TODO: Seems by mistake its here. Might remove completely afetr testing
+            //var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?
+            //                        .FirstOrDefault()?.Value;
 
             ResponseDto? response = await _cartService.ApplyCouponAsync(cartDto);
 
@@ -90,6 +91,20 @@ namespace Mango.Web.Controllers
                 return cartDto;
             }
             return new CartDto();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EmailCART(CartDto cartDto)
+        {
+            //Note: Tutor is using EmailCart instead EmailCartAsync method name
+            ResponseDto? response = await _cartService.EmailCartAsync(cartDto);
+
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = "Email will be processed and sent shortly!";
+                return RedirectToAction(nameof(CartIndex));
+            }
+            return View();
         }
     }
 }
