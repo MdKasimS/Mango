@@ -1,4 +1,6 @@
 using AutoMapper;
+
+using Mango.MessageBus;
 using Mango.Services.ShoppingCartAPI;
 using Mango.Services.ShoppingCartAPI.Data;
 using Mango.Services.ShoppingCartAPI.Extensions;
@@ -24,6 +26,8 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddScoped<ICouponService, CouponService>();
+// Note: Do remember, this is unlike tutor's Azure Service Bus. It uses RabbitMQ implementation in main branch itself.
+builder.Services.AddScoped<IMessageBus, RabbitMQAuthMessageSender>();
 
 /// Another way to configure Httpclient service.
 /// The other way is shown in Web project
