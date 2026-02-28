@@ -40,8 +40,7 @@ namespace Mango.MessageBus
             durable: false,
             exclusive: false,
             autoDelete: false,
-            arguments: null
-        );
+            arguments: null);
 
             // serialize message
             var json = JsonConvert.SerializeObject(message);
