@@ -1,4 +1,4 @@
-﻿using Mango.MessageBus.Dto;
+﻿using Mango.Services.EmailAPI.Models.Dto;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -12,7 +12,7 @@ using System.Data.Common;
 using System.Text;
 using System.Threading.Channels;
 
-namespace Mango.MessageBus
+namespace Mango.Services.EmailAPI.Messaging
 {
     public class RabbitMQMessageConsumer: IMessageConsumer
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mango.MessageBus
+namespace Mango.Services.EmailAPI.Messaging
 {
     public class MessageQueueSettings
     {

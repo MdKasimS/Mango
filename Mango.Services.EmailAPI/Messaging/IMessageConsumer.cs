@@ -1,4 +1,4 @@
-﻿namespace Mango.MessageBus
+﻿namespace Mango.Services.EmailAPI.Messaging
 {
     public interface IMessageConsumer
     {
