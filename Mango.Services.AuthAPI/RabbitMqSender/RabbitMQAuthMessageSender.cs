@@ -16,6 +16,7 @@ namespace Mango.Services.AuthAPI.RabbitMqSender
 
         public RabbitMQAuthMessageSender()
         {
+            // TODO: Make it DI specific code that can be passed via args as well
             _hostName = "localhost";
             _userName = "guest";
             _password = "guest";
@@ -32,31 +33,30 @@ namespace Mango.Services.AuthAPI.RabbitMqSender
             //TODO: Tutor has used CreateConnection(). But intellisense is not suggesting it.
             _connection = await factory.CreateConnectionAsync();
 
-            using var channel = _connection.CreateChannelAsync();
+            var channel = await _connection.CreateChannelAsync();
 
-
-            await channel.QueueDeclareA(
-                queue: queueName,
-                durable: false,
-                exclusive: false,
-                autoDelete: false,
-                arguments: null
-            );
+            await channel.QueueDeclareAsync(
+            queue: queueName,
+            durable: false,
+            exclusive: false,
+            autoDelete: false,
+            arguments: null
+        );
 
             // serialize message
             var json = JsonConvert.SerializeObject(message);
             var body = Encoding.UTF8.GetBytes(json);
 
             // properties are optional but recommended (e.g., content-type)
-            var props = channel.CreationOptions();
-            props.ContentType = "application/json";
+            //var props = channel.CreateOptions();
+            //props.ContentType = "application/json";
 
             // publish to the default exchange ("") using the queue name as routing key
             await channel.BasicPublishAsync(
                 exchange: "",
                 routingKey: queueName,
                 mandatory: false,
-                basicProperties: props,
+                //basicProperties: props,
                 body: body // byte[] is accepted; will be wrapped as ReadOnlyMemory<byte>
             );
 
