@@ -4,8 +4,10 @@ using System.Text;
 
 namespace Mango.MessageBus
 {
-    internal interface IMessageBus
+    public interface IMessageBus
     {
-        Task PublishMessage(object message, string topic_queue_name);
+        // TODO: This method was used by tutor for Servcie Bus. We want unique method names & ways to gain swappability
+        //Task PublishMessage(object message, string topic_queue_name);
+        Task SendMessage(object message, string queueName);
     }
 }

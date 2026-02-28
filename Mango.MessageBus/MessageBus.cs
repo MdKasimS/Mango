@@ -10,5 +10,10 @@ namespace Mango.MessageBus
         {
             //await using var client = new ServiceBusClient();
         }
+
+        public Task SendMessage(object message, string queueName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
