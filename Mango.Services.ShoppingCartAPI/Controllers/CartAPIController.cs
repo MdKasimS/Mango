@@ -20,7 +20,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
     {
         private readonly AppDbContext _db;
         private readonly IMapper _mapper;
-        private readonly IMessageBus _messageBus;
+        private readonly IMessageProducer _messageBus;
 
         /// <summary>
         /// Dont Make it private readonly, else it will be null.
@@ -33,7 +33,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
         public CartAPIController(AppDbContext db, IMapper mapper
                                 , IProductService productService
                                 , ICouponService couponService
-                                , IMessageBus messageBus
+                                , IMessageProducer messageBus
                                 , IConfiguration configuration)
         {
             _db = db;

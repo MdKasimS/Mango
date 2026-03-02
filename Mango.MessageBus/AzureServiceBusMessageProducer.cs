@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Mango.MessageBus
 {
-    public class AzureServiceBusMessageProducer : IMessageBus
+    public class AzureServiceBusMessageProducer : IMessageProducer
     {
         // Note: Its equivalent to Publish message in Azure service bus.
         public async Task SendMessage(object message, string queueName)

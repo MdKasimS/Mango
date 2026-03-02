@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace Mango.MessageBus
 {
-    public class RabbitMQMessageProducer : IMessageBus
+    public class RabbitMQMessageProducer : IMessageProducer
     {
         private readonly string _hostName;
         private readonly string _userName;
