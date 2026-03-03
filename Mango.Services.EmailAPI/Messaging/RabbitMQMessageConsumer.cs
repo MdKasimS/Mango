@@ -19,6 +19,7 @@ namespace Mango.Services.EmailAPI.Messaging
     {
         private readonly string _messageBusConnectionString;
         private readonly string _emailCartQueue;
+        private readonly string _registerUserQueue;
         private readonly IConfiguration _configuration;
 
         //TODO: Because its is singleton, we don't need interface
@@ -39,8 +40,8 @@ namespace Mango.Services.EmailAPI.Messaging
              */
             _emailCartQueue = configuration["TopicAndQueueNames:EmailShoppingCartQueue"];
 
-            //_registerUserQueue =
-            //    configuration["TopicAndQueueNames:RegisterUserQueue"];
+            _registerUserQueue =
+                configuration["TopicAndQueueNames:RegisterUserQueue"];
 
             //_orderCreatedQueue =
             //    configuration["TopicAndQueueNames:OrderCreatedTopic"];
@@ -55,7 +56,7 @@ namespace Mango.Services.EmailAPI.Messaging
             _channel = _connection.CreateChannelAsync().Result;
 
             _channel.QueueDeclareAsync(_emailCartQueue, false, false, false, null);
-            //_channel.QueueDeclare(_registerUserQueue, false, false, false, null);
+            _channel.QueueDeclareAsync(_registerUserQueue, false, false, false, null);
             //_channel.QueueDeclare(_orderCreatedQueue, false, false, false, null);
         }
 
@@ -74,7 +75,7 @@ namespace Mango.Services.EmailAPI.Messaging
                 try
                 {
                     await _emailService.EmailCartAndLog(objMessage);
-                    _channel.BasicAckAsync(args.DeliveryTag, false);
+                    await _channel.BasicAckAsync(args.DeliveryTag, false);
                 }
                 catch
                 {
@@ -92,7 +93,7 @@ namespace Mango.Services.EmailAPI.Messaging
         public async Task Start()
         {
             await StartEmailCartConsumer();
-            //await StartRegisterUserConsumer();
+            await StartRegisterUserConsumer();
             //await StartOrderPlacedConsumer();
         }
 
@@ -109,34 +110,34 @@ namespace Mango.Services.EmailAPI.Messaging
             return Task.CompletedTask;
         }
 
-        //private async Task StartRegisterUserConsumer()
-        //{
-        //    var consumer = new EventingBasicConsumer(_channel);
+        private async Task StartRegisterUserConsumer()
+        {
+            var consumer = new AsyncEventingBasicConsumer(_channel);
 
-        //    consumer.Received += async (sender, args) =>
-        //    {
-        //        var body = args.Body.ToArray();
-        //        var message = Encoding.UTF8.GetString(body);
+            consumer.ReceivedAsync += async (sender, args) =>
+            {
+                var body = args.Body.ToArray();
+                var message = Encoding.UTF8.GetString(body);
 
-        //        string email =
-        //            JsonConvert.DeserializeObject<string>(message);
+                UserDto user =
+                    JsonConvert.DeserializeObject<UserDto>(message);
 
-        //        try
-        //        {
-        //            await _emailService.RegisterUserEmailAndLog(email);
-        //            _channel.BasicAck(args.DeliveryTag, false);
-        //        }
-        //        catch
-        //        {
-        //            await _channel.BasicNack(args.DeliveryTag, false, true);
-        //        }
-        //    };
+                try
+                {
+                    await _emailService.RegisterUserEmailAndLog(user);
+                    await _channel.BasicAckAsync(args.DeliveryTag, false);
+                }
+                catch
+                {
+                    await _channel.BasicNackAsync(args.DeliveryTag, false, true);
+                }
+            };
 
-        //    await _channel.BasicConsume(
-        //        queue: _registerUserQueue,
-        //        autoAck: false,
-        //        consumer: consumer);
-        //}
+            await _channel.BasicConsumeAsync(
+                queue: _registerUserQueue,
+                autoAck: false,
+                consumer: consumer);
+        }
 
         //private async Task StartOrderPlacedConsumer()
         //{
