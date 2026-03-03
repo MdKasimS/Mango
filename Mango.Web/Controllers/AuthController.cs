@@ -113,6 +113,7 @@ namespace Mango.Web.Controllers
 
         public async Task<IActionResult> Logout()
         {
+            //TODO: This might conflict when UI is not SSR mode.
             await HttpContext.SignOutAsync();
             _tokenProvider.ClearToken();
             return RedirectToAction("Index", "Home");
