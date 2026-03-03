@@ -1,7 +1,9 @@
-﻿using Mango.Services.AuthAPI.Models.Dto;
+﻿using Mango.MessageBus;
+using Mango.Services.AuthAPI.Models.Dto;
 using Mango.Services.AuthAPI.RabbitMqSender;
 using Mango.Services.AuthAPI.Service;
 using Mango.Services.AuthAPI.Service.IService;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +23,7 @@ namespace Mango.Services.AuthAPI.Controllers
 
         // TODO: I have added respective interface & its concrete class in Mango.Integration. Switch to use that one.
         // Since we are not going to keep any cloud based MQ as primary queuing technology.
-        protected IRabbitMQAuthMessageSender _messageBus;
+        protected IMessageProducer _messageBus;
 
         //TODO: With Clean Architecture Try To Decouple This
         /// <summary> 
@@ -32,7 +34,7 @@ namespace Mango.Services.AuthAPI.Controllers
         /// </summary>
         /// <param name="db"></param>
         /// <param name="mapper"></param>
-        public AuthAPIController(IAuthService service, IRabbitMQAuthMessageSender messageBus, IConfiguration configuration)
+        public AuthAPIController(IAuthService service, IMessageProducer messageBus, IConfiguration configuration)
         {
             _authService = service;
             _response = new();
