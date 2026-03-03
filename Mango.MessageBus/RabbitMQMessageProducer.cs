@@ -59,8 +59,8 @@ namespace Mango.MessageBus
                 body: body // byte[] is accepted; will be wrapped as ReadOnlyMemory<byte>
             );
 
-            channel.DisposeAsync();
-            _connection.Dispose();
+            await channel.DisposeAsync();
+            await _connection.DisposeAsync();
         }
     }
 }
