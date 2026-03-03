@@ -55,6 +55,7 @@ namespace Mango.Services.AuthAPI.Controllers
                 return BadRequest(_response);
             }
 
+            //TODO: Check we need here Id or not. I have excluded because of privacy concerns.
             UserDto userDto = new UserDto()
             { 
                 Name = model.Name,
