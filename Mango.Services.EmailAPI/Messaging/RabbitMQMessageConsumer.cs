@@ -23,7 +23,7 @@ namespace Mango.Services.EmailAPI.Messaging
         private readonly string _registerUserQueue;
         private readonly IConfiguration _configuration;
 
-        //TODO: Because its is singleton, we don't need interface
+        //TODO: Because it is singleton, we don't need interface
         private readonly EmailService _emailService;
         private IConnection _connection;
         private IChannel _channel;
