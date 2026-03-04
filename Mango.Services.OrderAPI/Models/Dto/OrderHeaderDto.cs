@@ -15,6 +15,6 @@
         public DateTime OrderTime { get; set; }
         public string? StripeSessionId { get; set; }
         public string? PaymentIntentId { get; set; }
-        public IEnumerable<OrderDetails> OrderDetails { get; set; }
+        public IEnumerable<OrderDetailsDto> OrderDetails { get; set; }
     }
 }
