@@ -15,6 +15,7 @@ using System.Threading.Channels;
 
 namespace Mango.Services.EmailAPI.Messaging
 {
+    //TODO: Make it as worker service - INherit BackgroundService 
     public class RabbitMQMessageConsumer: IMessageConsumer
     {
         private readonly string _messageBusConnectionString;
@@ -31,20 +32,19 @@ namespace Mango.Services.EmailAPI.Messaging
                                         , IConfiguration configuration
                                         , EmailService emailService)
         {
-            _configuration = configuration;
+            _configuration = configuration ?? throw new InvalidOperationException("RabbitMQ connection string missing.");
             _emailService = emailService;
             _messageBusConnectionString = options.Value.RabbitMQ.ConnectionString;
 
             /* TODO: Here GetValue was not working somehow
              * _emailCartQueue = _configuration.GetValue<string>("Key");
              */
-            _emailCartQueue = configuration["TopicAndQueueNames:EmailShoppingCartQueue"];
+            _emailCartQueue = configuration["TopicAndQueueNames:EmailShoppingCartQueue"] ?? throw new InvalidOperationException("EmailShoppingCartQueue config missing."); ;
 
-            _registerUserQueue =
-                configuration["TopicAndQueueNames:RegisterUserQueue"];
+            _registerUserQueue = configuration["TopicAndQueueNames:RegisterUserQueue"] ?? throw new InvalidOperationException("RegisterUserQueue config missing."); ;
 
             //_orderCreatedQueue =
-            //    configuration["TopicAndQueueNames:OrderCreatedTopic"];
+            //    configuration["TopicAndQueueNames:OrderCreatedTopic"]?? throw new InvalidOperationException("OrderCreatedQueue config missing.");;
 
             // TODO: Refactor it. Not satisfied with this arrangements. The reason is - if async is available,
             // with this setting it remains unused.
@@ -52,6 +52,9 @@ namespace Mango.Services.EmailAPI.Messaging
             {
                 Uri = new Uri(_messageBusConnectionString)
             };
+
+            //TODO: sync-over-async and can deadlock (and it hides failures during DI construction)
+            //TODO: Per queue, you can create channel instead of single one. Scaling factor
             _connection = factory.CreateConnectionAsync().Result;
             _channel = _connection.CreateChannelAsync().Result;
 
