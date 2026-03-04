@@ -60,10 +60,10 @@ namespace Mango.Services.EmailAPI.Messaging
 
             _channel.QueueDeclareAsync(_emailCartQueue, false, false, false, null);
             _channel.QueueDeclareAsync(_registerUserQueue, false, false, false, null);
-            //_channel.QueueDeclare(_orderCreatedQueue, false, false, false, null);
+            //_channel.QueueDeclareAsync(_orderCreatedQueue, false, false, false, null);
         }
 
-        private async Task StartEmailCartConsumer()
+        private async Task StartEmailCartConsumerAsync()
         {
             var consumer = new AsyncEventingBasicConsumer(_channel);
 
@@ -95,9 +95,9 @@ namespace Mango.Services.EmailAPI.Messaging
 
         public async Task Start()
         {
-            await StartEmailCartConsumer();
-            await StartRegisterUserConsumer();
-            //await StartOrderPlacedConsumer();
+            await StartEmailCartConsumerAsync();
+            await StartRegisterUserConsumerAsync();
+            //await StartOrderPlacedConsumerAsync();
         }
 
         public async Task Stop()
@@ -113,7 +113,7 @@ namespace Mango.Services.EmailAPI.Messaging
             return Task.CompletedTask;
         }
 
-        private async Task StartRegisterUserConsumer()
+        private async Task StartRegisterUserConsumerAsync()
         {
             var consumer = new AsyncEventingBasicConsumer(_channel);
 
@@ -142,7 +142,7 @@ namespace Mango.Services.EmailAPI.Messaging
                 consumer: consumer);
         }
 
-        //private async Task StartOrderPlacedConsumer()
+        //private async Task StartOrderPlacedConsumerAsync()
         //{
         //    var consumer = new EventingBasicConsumer(_channel);
 
