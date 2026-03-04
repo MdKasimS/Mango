@@ -10,6 +10,7 @@ namespace Mango.Web.Models
         public double Discount { get; set; }
         public double CartTotal { get; set; }
 
+        //TODO: Tutor has used here Name. Try to reduce props for to Name
         [Required]
         public string? FirstName { get; set; }
         [Required]
