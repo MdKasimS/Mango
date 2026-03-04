@@ -15,7 +15,8 @@ using System.Threading.Channels;
 
 namespace Mango.Services.EmailAPI.Messaging
 {
-    //TODO: Make it as worker service - INherit BackgroundService 
+    //TODO: Make it as worker service - Inherit BackgroundService.
+    //Note: Whenever EmailAPI spins up, Consumers are also spinning. If they couldn't, application is crashing in VS2026 Debug mode at least.
     public class RabbitMQMessageConsumer: IMessageConsumer
     {
         private readonly string _messageBusConnectionString;
@@ -55,6 +56,7 @@ namespace Mango.Services.EmailAPI.Messaging
 
             //TODO: sync-over-async and can deadlock (and it hides failures during DI construction)
             //TODO: Per queue, you can create channel instead of single one. Scaling factor
+            //TODO: When RabbitMQ is not running, it throws exception. Handle this exception. If its not reachable, whole application is crashing. Microservice arch?
             _connection = factory.CreateConnectionAsync().Result;
             _channel = _connection.CreateChannelAsync().Result;
 

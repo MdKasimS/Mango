@@ -75,24 +75,6 @@ namespace Mango.Web.Controllers
             return View();
         }
 
-        private async Task<CartDto> LoadCartDtoBasedOnLoggedInUser()
-        {
-            //TODO: Why this is working? How user was accessed?
-            var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?
-                                    .FirstOrDefault()?.Value;
-
-            ResponseDto? response = await _cartService.GetCartByUserIdAsync(userId);
-
-            //TODO: Bug - If user don't have any item in cart, for that user CartIndex doesn't load
-            if (response != null && response.IsSuccess)
-            {
-                //TODO: For tutor, this line is not giving exception for user with 0 items in cart.
-                CartDto cartDto = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(response.Result));
-                return cartDto;
-            }
-            return new CartDto();
-        }
-
         [HttpPost]
         public async Task<IActionResult> EmailCart(CartDto cartDto)
         {
@@ -113,5 +95,29 @@ namespace Mango.Web.Controllers
             }
             return View();
         }
+
+        [Authorize]
+        public async Task<IActionResult> Checkout()
+        {
+            return View(await LoadCartDtoBasedOnLoggedInUser());
+        }
+        private async Task<CartDto> LoadCartDtoBasedOnLoggedInUser()
+        {
+            //TODO: Why this is working? How user was accessed?
+            var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?
+                                    .FirstOrDefault()?.Value;
+
+            ResponseDto? response = await _cartService.GetCartByUserIdAsync(userId);
+
+            //TODO: Bug - If user don't have any item in cart, for that user CartIndex doesn't load
+            if (response != null && response.IsSuccess)
+            {
+                //TODO: For tutor, this line is not giving exception for user with 0 items in cart.
+                CartDto cartDto = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(response.Result));
+                return cartDto;
+            }
+            return new CartDto();
+        }
+    
     }
 }
