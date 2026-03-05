@@ -55,7 +55,7 @@ namespace Mango.Services.OrderAPI.Controllers
 
                 //TODO: Checkout this what it is in detail .Entity
                 //TODO: Check whether await works here or not. Earlier it was not working or might be timing difference due to async-await
-                OrderHeader orderCreated = await _db.OrderHeaders.AddAsync(_mapper.Map<OrderHeader>(orderHeaderDto)).Entity;
+                OrderHeader orderCreated = _db.OrderHeaders.Add(_mapper.Map<OrderHeader>(orderHeaderDto)).Entity;
                 await _db.SaveChangesAsync();
 
                 orderHeaderDto.Id = orderCreated.Id;
