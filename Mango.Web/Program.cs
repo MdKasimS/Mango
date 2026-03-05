@@ -24,7 +24,8 @@ builder.Services.AddHttpClient();
  This is particularly useful for services that make HTTP calls, as it helps in reusing HttpClient instances efficiently.
 */
 
-//TODO: Wht it worked without this earlier
+//TODO: Why it worked without this earlier
+builder.Services.AddHttpClient<IOrderService, OrderService>();
 builder.Services.AddHttpClient<ICartService, CartService>();
 builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
@@ -38,7 +39,8 @@ SD.OrderAPIBase = builder.Configuration["ServiceUrls:OrderAPI"];
 
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();
-builder.Services.AddScoped<IProductService,ProductService>();
+builder.Services.AddScoped<IOrderService,OrderService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
