@@ -1,4 +1,5 @@
 ﻿using Mango.Web.Models;
+using Mango.Web.Models.Dto;
 using Mango.Web.Service.IService;
 
 using Microsoft.AspNetCore.Authorization;
@@ -14,9 +15,11 @@ namespace Mango.Web.Controllers
     public class CartController : Controller
     {
         private ICartService _cartService;
-        public CartController(ICartService cartService)
+        private IOrderService _orderService;
+        public CartController(ICartService cartService, IOrderService orderService)
         {
             _cartService = cartService;
+            _orderService = orderService;
         }
 
         [Authorize]
@@ -101,6 +104,31 @@ namespace Mango.Web.Controllers
         {
             return View(await LoadCartDtoBasedOnLoggedInUser());
         }
+
+        [HttpPost]
+        [ActionName("Checkout")]
+        public async Task<IActionResult> Checkout(CartDto cartDto)
+        {
+            CartDto cart = await LoadCartDtoBasedOnLoggedInUser();
+            cart.CartHeader.Name = cartDto.CartHeader.Name;
+            cart.CartHeader.Email = cartDto.CartHeader.Email;
+            cart.CartHeader.Phone = cartDto.CartHeader.Phone;
+
+            //TODO: For this property, OrderAPI have Name property. Check the binindgs
+            cart.CartHeader.Name = cartDto.CartHeader.Name;
+
+            var response = await _orderService.CreateOrderAsync(cart);
+
+            OrderHeaderDto orderHeaderDto = JsonConvert.DeserializeObject<OrderHeaderDto>(Convert.ToString(response.Result));
+
+            //TODO: Bug, for same cart, order is being created repeatedly. Once order is placed, cart must be empty.    
+            if (response != null && response.IsSuccess)
+            {
+                //TODO: Stripe code & redirect to place order
+            }
+
+            return View();
+        }
         private async Task<CartDto> LoadCartDtoBasedOnLoggedInUser()
         {
             //TODO: Why this is working? How user was accessed?
@@ -118,6 +146,6 @@ namespace Mango.Web.Controllers
             }
             return new CartDto();
         }
-    
+
     }
 }

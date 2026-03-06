@@ -9,8 +9,8 @@
         public double CartTotal { get; set; }
 
         //TODO: Tutor has used here Name. Try to reduce props for to Name
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
+        public string? Name { get; set; }
+        //public string? LastName { get; set; }
         public string? Phone { get; set; }
         public string? Email { get; set; }
     }

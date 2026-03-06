@@ -12,9 +12,7 @@ namespace Mango.Web.Models
 
         //TODO: Tutor has used here Name. Try to reduce props for to Name
         [Required]
-        public string? FirstName { get; set; }
-        [Required]
-        public string? LastName { get; set; }
+        public string? Name { get; set; }
         [Required]
         public string? Phone { get; set; }
         [Required]

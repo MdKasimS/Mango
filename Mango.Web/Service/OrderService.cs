@@ -13,9 +13,8 @@ namespace Mango.Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = SD.ApiType.POST,
-                //TODO: unsual way, tutor has used
-                //Url = SD.OrderAPIBase + "/api/order/CreateOrder",
-                Url = SD.OrderAPIBase + "/api/order",
+                //TODO: unsual way, tutor has used. Because method is with [HttpPost("CreateOrder")] attribute
+                Url = SD.OrderAPIBase + "/api/order/CreateOrder",
                 Data = cartDto
             });
         }
