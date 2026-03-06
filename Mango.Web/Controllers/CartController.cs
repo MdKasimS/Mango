@@ -114,7 +114,6 @@ namespace Mango.Web.Controllers
             cart.CartHeader.Email = cartDto.CartHeader.Email;
             cart.CartHeader.Phone = cartDto.CartHeader.Phone;
 
-            //TODO: For this property, OrderAPI have Name property. Check the binindgs
             cart.CartHeader.Name = cartDto.CartHeader.Name;
 
             var response = await _orderService.CreateOrderAsync(cart);
