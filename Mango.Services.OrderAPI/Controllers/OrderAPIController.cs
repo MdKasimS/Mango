@@ -42,6 +42,7 @@ namespace Mango.Services.OrderAPI.Controllers
             _configuration = configuration;
         }
 
+        //TODO: Since it is with parameter, path in OrderService of Web, is different in Post of ProductService
         [HttpPost("CreateOrder")]
         [Authorize]
         public async Task<ResponseDto> CreateOrder([FromBody] CartDto cartDto)
