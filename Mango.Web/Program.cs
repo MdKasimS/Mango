@@ -3,6 +3,9 @@ using Mango.Web.Service.IService;
 using Mango.Web.Utility;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
+/*
+ * This branch is easy to start for demo in VS2026.
+ */
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
