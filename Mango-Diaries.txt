@@ -1,0 +1,5 @@
+Reached stage where I have create dockerfiles for all app & services.
+Right using containerized MSSQL server with locally running services & MVC app.
+
+Next is run all MVC app & services containers in local docker-daemon and creating network inside docker
+so that they can communicate & provide services.
