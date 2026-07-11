@@ -128,6 +128,12 @@ namespace Mango.Web.Controllers
 
             return View();
         }
+
+        public async Task<IActionResult> Confirmation(int orderId)
+        {
+            return View(orderId);
+        }
+
         private async Task<CartDto> LoadCartDtoBasedOnLoggedInUser()
         {
             //TODO: Why this is working? How user was accessed?
