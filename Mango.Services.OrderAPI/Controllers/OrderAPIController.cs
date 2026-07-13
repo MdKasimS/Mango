@@ -63,7 +63,7 @@ namespace Mango.Services.OrderAPI.Controllers
 
                 _response.Result = orderHeaderDto;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 _response.Message = ex.Message;
@@ -71,5 +71,38 @@ namespace Mango.Services.OrderAPI.Controllers
 
             return _response;
         }
+
+        //[HttpPost("CreateStripeSession")]
+        //[Authorize]
+        //public async Task<ResponseDto> CreateStripeSession([FromBody] PayementRequestDto paymentRequestDto)
+        //{
+        //    try
+        //    {
+        //        var options = new SessionCreateOptions
+        //        {
+        //            SuccessUrl = paymentRequestDto.ApprovedUrl,
+        //            LineItems = new List<SessionLineItemOptions>()
+        //            {
+        //                new SessionLineItemOptions{
+        //                    Price = "price_12345",
+        //                    Quantity = 2,
+        //                }
+        //            },
+        //            Mode = "payment",
+        //            CancelUrl = paymentRequestDto.CancelUrl,
+        //        };
+        //        var service = new SessionService();
+        //        service.Create(options);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _response.IsSuccess = false;
+        //        _response.Message = ex.Message;
+        //    }
+
+        //    return _response;
+        //}
+
+
     }
 }
