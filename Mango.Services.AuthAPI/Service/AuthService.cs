@@ -161,3 +161,27 @@ namespace Mango.Services.AuthAPI.Service
         }
     }
 }
+
+/*  AspNetUserTokens
+    
+    UserId
+    LoginProvider
+    Name
+    Value
+
+    ASP.NET Core Identity does not automatically store your JWT access token here just because your Auth API generated a JWT.
+
+    This table is generally used by Identity APIs/providers to persist things such as:
+
+    External authentication provider tokens
+    Authenticator-related tokens
+    Other provider-specific persistent tokens
+
+    For example, an application might store data associated with:
+
+    Google
+    Microsoft
+    Facebook
+
+    authentication flows.
+*/
