@@ -2,7 +2,11 @@
 using Mango.Services.AuthAPI.Models;
 using Mango.Services.AuthAPI.Models.Dto;
 using Mango.Services.AuthAPI.Service.IService;
+
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
+using System.Security.Claims;
 
 namespace Mango.Services.AuthAPI.Service
 {
@@ -22,6 +26,48 @@ namespace Mango.Services.AuthAPI.Service
             _roleManager = roleManager;
         }
 
+        /// <summary>
+        /// AspNetUserClaims — empty is normal
+        /*        AspNetUserClaims
+
+            Id
+            UserId
+            ClaimType
+            ClaimValue
+
+            This table is populated only when you explicitly add a claim to a user.
+
+            For example:
+
+            await _userManager.AddClaimAsync(
+                user,
+                new Claim("Department", "Sales")
+            );
+
+            Then you will see something like:
+
+            Id UserId  ClaimType ClaimValue
+            1   user-guid Department  Sales
+            Important for your Mango Auth API
+
+            If your JWT contains claims such as:
+
+            sub = user-id
+            email = kasim@example.com
+            role = Admin
+
+            that does not necessarily mean those claims came from AspNetUserClaims.
+
+            Your Auth API can construct JWT claims dynamically during login:
+
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id)
+            new Claim(JwtRegisteredClaimNames.Email, user.Email)
+
+        Those claims exist inside the JWT, but aren't necessarily stored in the database.*/
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="roleName"></param>
+        /// <returns></returns>
         public async Task<bool> AssignRole(string email, string roleName)
         {
             var user = _db.ApplicationUsers.FirstOrDefault(u => u.Email.ToLower() == email.ToLower());
