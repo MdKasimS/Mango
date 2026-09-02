@@ -56,3 +56,16 @@ void ApplyMigration()
         }
     }
 }
+
+/* Basics Of ASP.NET Identity Provider
+ 
+ | Table              | Automatically populated?    | When                                    |
+ | ------------------ | --------------------------- | --------------------------------------- |
+ | `AspNetUsers`      | Yes                         | User registration                       |
+ | `AspNetRoles`      | Yes, when created           | Role creation                           |
+ | `AspNetUserRoles`  | Yes                         | User assigned a role                    |
+ | `AspNetUserClaims` | No                          | You explicitly add user claims          |
+ | `AspNetRoleClaims` | No                          | You explicitly add role claims          |
+ | `AspNetUserTokens` | No, not for your custom JWT | Token/provider explicitly persists data |
+
+*/
