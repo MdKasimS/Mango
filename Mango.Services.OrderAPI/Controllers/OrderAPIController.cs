@@ -72,6 +72,10 @@ namespace Mango.Services.OrderAPI.Controllers
             return _response;
         }
 
+        ///Note: Stripe Checkout — redirect to a hosted page, user pays, 
+        ///redirect back to success/cancel, 
+        ///then a webhook/session-validation confirms it.
+        
         //[HttpPost("CreateStripeSession")]
         //[Authorize]
         //public async Task<ResponseDto> CreateStripeSession([FromBody] PayementRequestDto paymentRequestDto)
